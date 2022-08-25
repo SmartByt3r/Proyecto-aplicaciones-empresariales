@@ -3,13 +3,14 @@ package tasks
 import (
 	"net/http"
 
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Backend/task-ms/auth"
 	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Backend/task-ms/pkg/common/models"
 	"github.com/gin-gonic/gin"
 )
 
 func (h handler) GetTasks(c *gin.Context) {
 	tokenString := c.GetHeader("Authorization")
-	userId, err := ValidateToken(tokenString)
+	userId, err := auth.ValidateToken(tokenString)
 
 	if err != nil {
 		c.JSON(401, gin.H{"error": err.Error()})
