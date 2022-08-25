@@ -12,6 +12,6 @@ COPY *.go ./
 
 EXPOSE 8080
 
-RUN go build -o /docker-task-ms
+RUN go build -o /docker-task-ms cmd/main.go
 
 CMD [ "/docker-task-ms" ]
