@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"jwt-authentication-golang/auth"
-	"jwt-authentication-golang/database"
-	"jwt-authentication-golang/models"
 	"net/http"
+
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/auth"
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/database"
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/models"
 
 	"github.com/gin-gonic/gin"
 )

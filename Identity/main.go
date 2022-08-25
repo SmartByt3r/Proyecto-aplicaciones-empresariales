@@ -1,9 +1,9 @@
 package main
 
 import (
-	"jwt-authentication-golang/controllers"
-	"jwt-authentication-golang/database"
-	"jwt-authentication-golang/middlewares"
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/controllers"
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/database"
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/middlewares"
 
 	"github.com/gin-gonic/gin"
 )

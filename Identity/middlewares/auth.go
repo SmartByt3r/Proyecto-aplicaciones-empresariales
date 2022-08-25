@@ -2,7 +2,8 @@ package middlewares
 
 import (
 	"fmt"
-	"jwt-authentication-golang/auth"
+
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/auth"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,8 +1,9 @@
 package database
 
 import (
-	"jwt-authentication-golang/models"
 	"log"
+
+	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
