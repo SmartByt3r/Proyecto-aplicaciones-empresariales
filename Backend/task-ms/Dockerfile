@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.16-alpine
+FROM golang:latest
 WORKDIR /app
 
 COPY go.mod ./
@@ -8,7 +8,7 @@ COPY go.sum ./
 
 RUN go mod download
 
-COPY *.go ./
+COPY . .
 
 EXPOSE 8080
 

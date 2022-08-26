@@ -1,21 +1,17 @@
 package main
 
 import (
-	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/controllers"
-	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/database"
-	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/middlewares"
-
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// Initialize Database
-	database.Connect("postgres://dev_admin:secret@localhost:5432/identity")
+	database.Connect("postgres://dev_admin:secret@postgresidentity:5431/identity")
 	database.Migrate()
 
 	// Initialize Router
 	router := initRouter()
-	router.Run(":8080")
+	router.Run(":8081")
 }
 
 func initRouter() *gin.Engine {
