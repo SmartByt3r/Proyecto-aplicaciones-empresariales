@@ -1,0 +1,11 @@
+.register-card {
+  width: min(90vw, 400px);
+  height: 500px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  height: 100%;
+}
