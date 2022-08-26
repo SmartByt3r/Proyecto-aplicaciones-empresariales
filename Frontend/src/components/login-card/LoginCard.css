@@ -1,0 +1,11 @@
+.login-card {
+  width: min(90vw, 400px);
+  height: 340px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  height: 100%;
+}
