@@ -3,6 +3,7 @@ package tasks
 import (
 	"github.com/gin-gonic/gin"
 
+	"github.com/gin-contrib/cors"
 	"gorm.io/gorm"
 )
 
@@ -14,7 +15,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 	h := &handler{
 		DB: db,
 	}
-
+	r.Use(cors.Default())
 	routes := r.Group("/tasks")
 	routes.POST("/", h.AddTask)
 	routes.GET("/", h.GetTasks)

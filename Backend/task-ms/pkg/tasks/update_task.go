@@ -22,7 +22,7 @@ func (h handler) UpdateTask(c *gin.Context) {
 	userId, err := auth.ValidateToken(tokenString)
 
 	if err != nil {
-		c.JSON(401, gin.H{"error": err.Error()})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		c.Abort()
 		return
 	}
