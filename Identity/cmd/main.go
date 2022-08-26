@@ -4,6 +4,7 @@ import (
 	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/controllers"
 	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/database"
 	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Identity/middlewares"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +20,7 @@ func main() {
 
 func initRouter() *gin.Engine {
 	router := gin.Default()
+	router.Use(cors.Default())
 	api := router.Group("/api")
 	{
 		api.POST("/token", controllers.GenerateToken)
