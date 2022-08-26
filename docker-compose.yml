@@ -15,7 +15,7 @@ services:
   identity:
       image: identity
       build:
-        context: ./identity/
+        context: ./Identity/
         dockerfile: Dockerfile
       ports:
       - '8081:8081'
