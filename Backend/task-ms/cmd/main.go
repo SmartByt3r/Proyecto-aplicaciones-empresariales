@@ -11,8 +11,8 @@ func main() {
 	viper.SetConfigFile("../pkg/common/envs/.env")
 	viper.ReadInConfig()
 
-	port := viper.Get("PORT").(string)
-	dbUrl := viper.Get("DB_URL").(string)
+	port := ":8082"
+	dbUrl := "postgres://dev_admin:secret@postgrestask:5432/olympus"
 
 	r := gin.Default()
 	h := db.Init(dbUrl)

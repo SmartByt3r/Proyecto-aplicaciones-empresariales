@@ -12,25 +12,15 @@ services:
     networks:
       - leapx
 
-  postgresidentity:
-    image: postgres
-    ports:
-      - '5431:5431'
-    environment:
-      POSTGRES_PASSWORD: secret
-      POSTGRES_USER: dev_admin
-      POSTGRES_DB: identity
-    networks:
-      - leapx
-
-
   identity:
       image: identity
       build:
         context: ./identity/
         dockerfile: Dockerfile
+      ports:
+      - '8081:8081'
       depends_on:
-        - postgresidentity 
+        - postgrestask 
       networks:
         - leapx
   
@@ -39,6 +29,8 @@ services:
       build:
         context: ./Backend/task-ms/
         dockerfile: Dockerfile
+      ports:
+        - '8082:8082'
       depends_on:
         - postgrestask 
       networks:
