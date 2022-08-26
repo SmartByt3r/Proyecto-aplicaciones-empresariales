@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../services/login";
 
 import "./RegisterCard.css";
 
@@ -14,7 +15,12 @@ export const RegisterCard = () => {
       password: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      try {
+        registerUser(values);
+        navigation("/login");
+      } catch (error) {
+        alert((error as Error).message);
+      }
     },
   });
   return (
@@ -31,6 +37,7 @@ export const RegisterCard = () => {
             type="text"
             onChange={formik.handleChange}
             value={formik.values.name}
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -40,6 +47,7 @@ export const RegisterCard = () => {
             type="text"
             onChange={formik.handleChange}
             value={formik.values.username}
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -49,6 +57,7 @@ export const RegisterCard = () => {
             type="email"
             onChange={formik.handleChange}
             value={formik.values.email}
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -58,6 +67,7 @@ export const RegisterCard = () => {
             type="password"
             onChange={formik.handleChange}
             value={formik.values.password}
+            required
           />
         </Form.Group>
 
