@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Initialize Database
-	database.Connect("postgres://dev_admin:secret@postgrestask:5432/olympus")
+	database.Connect("postgres://dev_admin:secret@postgresidentity:5432/identity")
 	database.Migrate()
 
 	// Initialize Router
