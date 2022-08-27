@@ -85,6 +85,19 @@ services:
       networks:
         - leapx
 
+  react:
+      image: react
+      build:
+        context: ./Frontend/
+        dockerfile: Dockerfile
+      ports:
+        - '3000:3000'
+      depends_on:
+        postgrestask:
+          condition: service_healthy 
+      networks:
+        - leapx
+
 
 networks:
   leapx:
