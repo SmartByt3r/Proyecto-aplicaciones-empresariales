@@ -1,0 +1,17 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+- name: task
+  url: http://task:8082/tasks
+  routes:
+  - name: task-route
+    paths:
+    - /tasks/
+
+- name: api
+  url: http://identity:8081/api
+  routes:
+  - name: api-route
+    paths:
+    - /api/
