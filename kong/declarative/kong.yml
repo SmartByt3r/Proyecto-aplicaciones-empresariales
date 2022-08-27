@@ -20,7 +20,8 @@ plugins:
 - name: cors
   service: api
   config: 
-    origins: *
+    origins: 
+    - "*"
     headers:
     - Accept
     - Accept-Version
@@ -37,7 +38,8 @@ plugins:
 - name: cors
   service: task
   config: 
-    origins: *
+    origins: 
+    - "*"
     headers:
     - Accept
     - Accept-Version
