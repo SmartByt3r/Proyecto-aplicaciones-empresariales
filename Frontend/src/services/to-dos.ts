@@ -41,7 +41,12 @@ export const updateTodo = async (
     status?: string;
   }
 ) => {
-  const { data } = await axios.put<ToDo>(`/tasks/${ID}`, todo);
+  const todoResponse = await axios.get<ToDo>(`/tasks/${ID}`);
+  const { data } = await axios.put<ToDo>(`/tasks/${ID}`, {
+    title: todo.title || todoResponse.data.title,
+    description: todo.description || todoResponse.data.description,
+    status: todo.status || todoResponse.data.status,
+  });
   return data;
 };
 
