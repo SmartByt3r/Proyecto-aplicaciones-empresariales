@@ -15,3 +15,21 @@ services:
   - name: api-route
     paths:
     - /api/
+
+plugins:
+- name: response-transformer
+  service: api
+  config:
+    append: 
+      headers:
+      - access-control-allow-origin:*
+      - access-control-allow-methods:"POST, GET, OPTIONS"
+
+plugins:
+- name: response-transformer
+  service: task
+  config:
+    append:
+      headers:
+      - access-control-allow-origin:*
+      - access-control-allow-methods:"POST, GET, OPTIONS"
