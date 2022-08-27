@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
-import { Button, Form } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/login";
 import "./LoginCard.css";
 
 export const LoginCard = () => {
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -12,11 +14,16 @@ export const LoginCard = () => {
       password: "",
     },
     onSubmit: (values) => {
+      setLoading(true);
       login(values.email, values.password)
         .then(() => {
           navigation("/");
         })
-        .catch(console.error);
+        .catch((e) => {
+          console.error(e);
+          alert(e.message);
+          setLoading(false);
+        });
     },
   });
   return (
@@ -47,7 +54,15 @@ export const LoginCard = () => {
           />
         </Form.Group>
 
-        <Button type="submit">Iniciar sesión</Button>
+        <Button type="submit" disabled={loading}>
+          {loading ? (
+            <Spinner animation="border" role="status" size="sm">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          ) : (
+            "Iniciar sesión"
+          )}
+        </Button>
         <Button
           variant="outline-primary"
           onClick={() => navigation("/register")}

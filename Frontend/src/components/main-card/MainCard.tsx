@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { ToDo as ToDoComponent } from "../todo/ToDo";
 import "./MainCard.css";
@@ -19,6 +19,8 @@ export const MainCard = () => {
   const [play] = useSound(require("../../sounds/coin.mp3"));
   const [todos, setTodos] = useState<ToDo[]>([]);
   const [todosCount, setTodosCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
   const navigation = useNavigate();
   const form = useFormik({
     initialValues: {
@@ -38,10 +40,16 @@ export const MainCard = () => {
   });
 
   useEffect(() => {
-    getAllTodos().then((todos) => {
-      setTodos(todos);
-      setTodosCount(todos.length);
-    });
+    getAllTodos()
+      .then((todos) => {
+        setTodos(todos);
+        setTodosCount(todos.length);
+        setLoading(false);
+      })
+      .catch((e) => {
+        alert("Error al cargar las tareas");
+        console.error(e);
+      });
   }, []);
 
   const completeToDo = async (todo: ToDo) => {
@@ -99,19 +107,27 @@ export const MainCard = () => {
       </div>
       {/*-------- TODOS outlet -------- */}
       <div className="todo-outlet">
-        {todos.map((todo) => (
-          <ToDoComponent
-            key={todo.ID}
-            completed={todo.status !== "TO-DO"}
-            onCheck={(check) =>
-              check ? completeToDo(todo) : unCompleteToDo(todo)
-            }
-            onEdit={(title, description) => editToDo(todo, title, description)}
-            onDelete={() => deleteToDoHandler(todo)}
-            description={todo.description}
-            title={todo.title}
-          />
-        ))}
+        {!loading ? (
+          todos.map((todo) => (
+            <ToDoComponent
+              key={todo.ID}
+              completed={todo.status !== "TO-DO"}
+              onCheck={(check) =>
+                check ? completeToDo(todo) : unCompleteToDo(todo)
+              }
+              onEdit={(title, description) =>
+                editToDo(todo, title, description)
+              }
+              onDelete={() => deleteToDoHandler(todo)}
+              description={todo.description}
+              title={todo.title}
+            />
+          ))
+        ) : (
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
       </div>
       {/*-------- Footer -------- */}
       <div className="footer">
