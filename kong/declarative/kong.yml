@@ -3,7 +3,7 @@ _transform: true
 
 services:
 - name: task
-  url: http://task:8082/tasks
+  url: http://task:8082/tasks/
   routes:
   - name: task-route
     paths:
