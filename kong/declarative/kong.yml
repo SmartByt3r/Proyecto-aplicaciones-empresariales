@@ -3,7 +3,7 @@ _transform: true
 
 services:
 - name: task
-  url: http://task:8082/tasks
+  url: http://task:8082/tasks/
   routes:
   - name: task-route
     paths:
@@ -17,19 +17,38 @@ services:
     - /api/
 
 plugins:
-- name: response-transformer
+- name: cors
   service: api
-  config:
-    append: 
-      headers:
-      - access-control-allow-origin:*
-      - access-control-allow-methods:POST, GET, OPTIONS, DELETE, PATCH
+  config: 
+    origins: 
+    - "*"
+    headers:
+    - Accept
+    - Accept-Version
+    - Content-Length
+    - Content-MD5
+    - Content-Type
+    - Date
+    - X-Auth-Token
+    exposed_headers:
+    - X-Auth-Token
+    credentials: true
+    max_age: 3600
 
-plugins:
-- name: response-transformer
+- name: cors
   service: task
-  config:
-    append:
-      headers:
-      - access-control-allow-origin:*
-      - access-control-allow-methods:POST, GET, OPTIONS, DELETE, PATCH
+  config: 
+    origins: 
+    - "*"
+    headers:
+    - Accept
+    - Accept-Version
+    - Content-Length
+    - Content-MD5
+    - Content-Type
+    - Date
+    - X-Auth-Token
+    exposed_headers:
+    - X-Auth-Token
+    credentials: true
+    max_age: 3600

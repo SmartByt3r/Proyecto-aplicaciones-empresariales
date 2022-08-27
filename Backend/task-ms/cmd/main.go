@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Backend/task-ms/pkg/common/db"
 	"github.com/SmartByt3r/Proyecto-aplicaciones-empresariales/Backend/task-ms/pkg/tasks"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
@@ -16,7 +17,7 @@ func main() {
 
 	r := gin.Default()
 	h := db.Init(dbUrl)
-
+	r.Use(cors.Default())
 	tasks.RegisterRoutes(r, h)
 	// register more routes here
 
