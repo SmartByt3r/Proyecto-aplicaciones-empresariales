@@ -39,7 +39,7 @@ export const MainCard = () => {
       );
       const newTodos = await getAllTodos(token);
       setTodos(newTodos);
-      setTodosCount(newTodos.length);
+      setTodosCount(todos.filter((t) => t.status === "TO-DO").length);
       form.resetForm();
     },
   });
