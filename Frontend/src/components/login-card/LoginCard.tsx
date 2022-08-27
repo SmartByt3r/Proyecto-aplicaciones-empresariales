@@ -1,12 +1,14 @@
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/auth.context";
 import { login } from "../../services/login";
 import "./LoginCard.css";
 
 export const LoginCard = () => {
   const [loading, setLoading] = useState(false);
+  const { setToken } = useContext(AuthContext);
   const navigation = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -16,7 +18,8 @@ export const LoginCard = () => {
     onSubmit: (values) => {
       setLoading(true);
       login(values.email, values.password)
-        .then(() => {
+        .then((token) => {
+          setToken(token);
           navigation("/");
         })
         .catch((e) => {

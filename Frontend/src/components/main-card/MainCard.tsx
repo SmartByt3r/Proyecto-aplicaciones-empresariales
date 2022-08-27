@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Spinner } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { ToDo as ToDoComponent } from "../todo/ToDo";
@@ -14,9 +14,11 @@ import {
 } from "../../services/to-dos";
 import { useFormik } from "formik";
 import useSound from "use-sound";
+import { AuthContext } from "../../context/auth.context";
 
 export const MainCard = () => {
   const [play] = useSound(require("../../sounds/coin.mp3"));
+  const { token, setToken } = useContext(AuthContext);
   const [todos, setTodos] = useState<ToDo[]>([]);
   const [todosCount, setTodosCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -28,11 +30,14 @@ export const MainCard = () => {
       description: "",
     },
     onSubmit: async (values) => {
-      await createTodo({
-        ...values,
-        status: "TO-DO",
-      });
-      const newTodos = await getAllTodos();
+      await createTodo(
+        {
+          ...values,
+          status: "TO-DO",
+        },
+        token
+      );
+      const newTodos = await getAllTodos(token);
       setTodos(newTodos);
       setTodosCount(newTodos.length);
       form.resetForm();
@@ -40,42 +45,43 @@ export const MainCard = () => {
   });
 
   useEffect(() => {
-    getAllTodos()
+    getAllTodos(token)
       .then((todos) => {
         setTodos(todos);
         setTodosCount(todos.length);
         setLoading(false);
       })
       .catch((e) => {
-        alert("Error al cargar las tareas");
         console.error(e);
       });
   }, []);
 
   const completeToDo = async (todo: ToDo) => {
     play();
-    await updateTodo(todo.ID, { status: "DONE" });
-    const todos = await getAllTodos();
+    await updateTodo(todo.ID, { status: "DONE" }, token);
+    const todos = await getAllTodos(token);
     setTodos(todos);
+    setTodosCount(todos.filter((t) => t.status === "TO-DO").length);
   };
   const unCompleteToDo = async (todo: ToDo) => {
-    await updateTodo(todo.ID, { status: "TO-DO" });
-    const todos = await getAllTodos();
+    await updateTodo(todo.ID, { status: "TO-DO" }, token);
+    const todos = await getAllTodos(token);
     setTodos(todos);
+    setTodosCount(todos.filter((t) => t.status === "TO-DO").length);
   };
 
   const editToDo = async (todo: ToDo, title: string, description: string) => {
-    await updateTodo(todo.ID, { title, description });
-    const todos = await getAllTodos();
+    await updateTodo(todo.ID, { title, description }, token);
+    const todos = await getAllTodos(token);
     setTodos(todos);
   };
 
   const deleteToDoHandler = async (todo: ToDo) => {
-    await deleteTodo(todo.ID);
-    const newTodos = await getAllTodos();
+    await deleteTodo(todo.ID, token);
+    const newTodos = await getAllTodos(token);
     console.log(newTodos);
     setTodos(newTodos);
-    setTodosCount(newTodos.length);
+    setTodosCount(newTodos.filter((t) => t.status === "TO-DO").length);
   };
 
   return (
@@ -136,6 +142,7 @@ export const MainCard = () => {
           variant="danger"
           onClick={() => {
             logout();
+            setToken("");
             navigation("/login");
           }}
         >

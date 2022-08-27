@@ -15,11 +15,11 @@ export const login = async (email: string, password: string) => {
     password,
   });
   console.log("token:", token);
-  localStorage.setItem("token", token);
+  return token;
 };
 
 export const logout = () => {
-  localStorage.clear();
+  localStorage.removeItem("token");
 };
 
 export const registerUser = async (user: User) => {

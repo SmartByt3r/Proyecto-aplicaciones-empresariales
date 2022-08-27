@@ -1,10 +1,11 @@
 import jwtDecode from "jwt-decode";
-import React, { createContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import { LoginCard } from "./components/login-card/LoginCard";
 import { MainCard } from "./components/main-card/MainCard";
 import { RegisterCard } from "./components/register-card/RegisterCard";
+import { AuthContext } from "./context/auth.context";
 interface JWTPayload {
   id: number;
   username: string;
@@ -14,6 +15,7 @@ interface JWTPayload {
 
 function App() {
   const navigation = useNavigate();
+  const { token, setToken } = useContext(AuthContext);
   useEffect(() => {
     const token = localStorage.getItem("token");
     //Si token no esta en local storage, redirigir a login
@@ -24,7 +26,7 @@ function App() {
     //Si token esta en local storage, verificar que no haya expirado
     const { exp } = jwtDecode<JWTPayload>(token);
     if (exp < Date.now() / 1000) {
-      localStorage.removeItem("token");
+      setToken("");
       navigation("/login");
     }
     //Si no expiro, redirigir a main
