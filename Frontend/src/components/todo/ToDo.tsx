@@ -3,13 +3,15 @@ import { Button, Form, OverlayTrigger, Popover } from "react-bootstrap";
 import "./ToDo.css";
 interface ToDoProps {
   completed?: boolean;
+  title: string;
+  description: string;
   onDelete?: () => void;
   onEdit?: (edited: string) => void;
   onCheck?: (checked: boolean) => void;
 }
 
 export const ToDo = (props: PropsWithChildren<ToDoProps>) => {
-  const { completed, onDelete, onEdit, onCheck } = props;
+  const { completed, onDelete, onEdit, onCheck, description, title } = props;
   const inputRef = useRef<HTMLInputElement>(null);
   const [editPopoverVisible, setEditPopoverVisible] = useState(false);
   const [confirmPopoverVisible, setConfirmPopoverVisible] = useState(false);
@@ -20,9 +22,7 @@ export const ToDo = (props: PropsWithChildren<ToDoProps>) => {
       <Popover.Body className="edit-popover">
         <Form.Control
           type="text"
-          defaultValue={
-            typeof props.children === "string" ? props.children : ""
-          }
+          defaultValue={description}
           ref={inputRef}
         ></Form.Control>
         <Button
@@ -65,11 +65,12 @@ export const ToDo = (props: PropsWithChildren<ToDoProps>) => {
       <Form.Check
         type="checkbox"
         onChange={(e) => onCheck && onCheck(e.target.checked)}
+        label={description}
       />
       <div
         className={completed ? "todo-content to-do-checked" : "todo-content"}
       >
-        {props.children}
+        <h5>{title}</h5>
       </div>
       <div className="todo-button-container">
         <OverlayTrigger

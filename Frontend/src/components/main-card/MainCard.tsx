@@ -1,20 +1,26 @@
-import { useReducer } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { ActionTypes, ToDo } from "./MainCard.reducer";
 import { ToDo as ToDoComponent } from "../todo/ToDo";
-import { initialState, todoReducer } from "./MainCard.reducer";
 import "./MainCard.css";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../services/login";
+import { getAllTodos, ToDo } from "../../services/to-dos";
 
 export const MainCard = () => {
-  const [todosState, dispatch] = useReducer(todoReducer, initialState);
+  const [todos, setTodos] = useState<ToDo[]>([]);
+  const [todosCount, setTodosCount] = useState(0);
+  const navigation = useNavigate();
 
-  const completeToDo = (todo: ToDo) => {
-    dispatch({ type: ActionTypes.COMPLETE_TODO, payload: todo });
-  };
-  const unCompleteToDo = (todo: ToDo) => {
-    dispatch({ type: ActionTypes.UNCOMPLETE_TODO, payload: todo });
-  };
+  useEffect(() => {
+    getAllTodos().then((todos) => {
+      setTodos(todos);
+      setTodosCount(todos.length);
+    });
+  }, []);
+
+  const completeToDo = (todo: ToDo) => {};
+  const unCompleteToDo = (todo: ToDo) => {};
 
   const editToDo = (todo: ToDo, edited: string) => {
     console.log(edited);
@@ -38,24 +44,32 @@ export const MainCard = () => {
       </div>
       {/*-------- TODOS outlet -------- */}
       <div className="todo-outlet">
-        {todosState.todos.map((todo) => (
+        {todos.map((todo) => (
           <ToDoComponent
-            key={todo.id}
-            completed={todo.completed}
+            key={todo.ID}
+            completed={todo.status !== "TO-DO"}
             onCheck={(check) =>
               check ? completeToDo(todo) : unCompleteToDo(todo)
             }
             onEdit={(edited) => editToDo(todo, edited)}
             onDelete={() => deleteToDo(todo)}
-          >
-            {todo.task}
-          </ToDoComponent>
+            description={todo.description}
+            title={todo.title}
+          ></ToDoComponent>
         ))}
       </div>
       {/*-------- Footer -------- */}
       <div className="footer">
-        {`Tienes ${todosState.todosCount} tareas pendientes`}{" "}
-        <Button variant="danger">Borrar Todo</Button>
+        {`Tienes ${todosCount} tareas pendientes`}
+        <Button
+          variant="danger"
+          onClick={() => {
+            logout();
+            navigation("/login");
+          }}
+        >
+          Cerrar sesión
+        </Button>
       </div>
     </div>
   );

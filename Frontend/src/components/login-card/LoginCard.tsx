@@ -33,6 +33,7 @@ export const LoginCard = () => {
             id="email"
             onChange={formik.handleChange}
             value={formik.values.email}
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -42,6 +43,7 @@ export const LoginCard = () => {
             type="password"
             onChange={formik.handleChange}
             value={formik.values.password}
+            required
           />
         </Form.Group>
 
