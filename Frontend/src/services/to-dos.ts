@@ -15,7 +15,7 @@ axios.defaults.headers.common["authorization"] = `${localStorage.getItem(
 )}`;
 
 export const getAllTodos = async () => {
-  const { data } = await axios.get<ToDo[]>("/tasks");
+  const { data } = await axios.get<ToDo[]>("/tasks/");
   return data;
 };
 
@@ -29,7 +29,7 @@ export const createTodo = async (todo: {
   description: string;
   status: string;
 }) => {
-  const { data } = await axios.post<ToDo>("/tasks", todo);
+  const { data } = await axios.post<ToDo>("/tasks/", todo);
   return data;
 };
 
