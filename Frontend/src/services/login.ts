@@ -10,10 +10,11 @@ interface User {
 export const login = async (email: string, password: string) => {
   const {
     data: { token },
-  } = await axios.post<{ token: string }>("http://localhost:8081/api/token", {
+  } = await axios.post<{ token: string }>("/api/token", {
     email,
     password,
   });
+  console.log("token:", token);
   localStorage.setItem("token", token);
 };
 
@@ -26,6 +27,6 @@ export const registerUser = async (user: User) => {
     email: string;
     userId: number;
     username: string;
-  }>("http://localhost:8081/api/user", user);
+  }>("/api/user", user);
   return data;
 };

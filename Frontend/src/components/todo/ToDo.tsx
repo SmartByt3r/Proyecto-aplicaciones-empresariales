@@ -1,4 +1,5 @@
-import { PropsWithChildren, useRef, useState } from "react";
+import { useFormik } from "formik";
+import { PropsWithChildren, useState } from "react";
 import { Button, Form, OverlayTrigger, Popover } from "react-bootstrap";
 import "./ToDo.css";
 interface ToDoProps {
@@ -6,33 +7,50 @@ interface ToDoProps {
   title: string;
   description: string;
   onDelete?: () => void;
-  onEdit?: (edited: string) => void;
+  onEdit?: (title: string, description: string) => void;
   onCheck?: (checked: boolean) => void;
 }
 
 export const ToDo = (props: PropsWithChildren<ToDoProps>) => {
   const { completed, onDelete, onEdit, onCheck, description, title } = props;
-  const inputRef = useRef<HTMLInputElement>(null);
   const [editPopoverVisible, setEditPopoverVisible] = useState(false);
   const [confirmPopoverVisible, setConfirmPopoverVisible] = useState(false);
+  const form = useFormik({
+    initialValues: {
+      title: title,
+      description: description,
+    },
+    onSubmit: (values) => {
+      setEditPopoverVisible(false);
+      onEdit && onEdit(values.title, values.description);
+    },
+  });
 
   const editPopover = (
     <Popover>
       <Popover.Header as="h3">Editar ToDo</Popover.Header>
-      <Popover.Body className="edit-popover">
-        <Form.Control
-          type="text"
-          defaultValue={description}
-          ref={inputRef}
-        ></Form.Control>
-        <Button
-          onClick={() => {
-            setEditPopoverVisible(false);
-            onEdit && onEdit(inputRef.current!.value);
-          }}
-        >
-          <i className="bi bi-save" />
-        </Button>
+      <Popover.Body>
+        <Form onSubmit={form.handleSubmit} className="edit-popover">
+          <Form.Control
+            id="title"
+            type="text"
+            value={form.values.title}
+            onChange={form.handleChange}
+            placeholder="Titulo"
+            onFocus={() => setEditPopoverVisible(true)}
+          />
+          <Form.Control
+            id="description"
+            type="text"
+            value={form.values.description}
+            onChange={form.handleChange}
+            placeholder="Descripcion"
+            onFocus={() => setEditPopoverVisible(true)}
+          />
+          <Button type="submit">
+            <i className="bi bi-save" />
+          </Button>
+        </Form>
       </Popover.Body>
     </Popover>
   );
@@ -65,16 +83,18 @@ export const ToDo = (props: PropsWithChildren<ToDoProps>) => {
       <Form.Check
         type="checkbox"
         onChange={(e) => onCheck && onCheck(e.target.checked)}
-        label={description}
       />
+
       <div
         className={completed ? "todo-content to-do-checked" : "todo-content"}
       >
-        <h5>{title}</h5>
+        <h6>{title}</h6>
+        {description}
       </div>
+
       <div className="todo-button-container">
         <OverlayTrigger
-          placement="top"
+          placement="left"
           overlay={editPopover}
           show={editPopoverVisible}
         >
@@ -87,7 +107,7 @@ export const ToDo = (props: PropsWithChildren<ToDoProps>) => {
           </Button>
         </OverlayTrigger>
         <OverlayTrigger
-          placement="top"
+          placement="right"
           overlay={confirmDeletePopover}
           show={confirmPopoverVisible}
         >
