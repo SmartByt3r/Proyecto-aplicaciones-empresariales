@@ -23,7 +23,7 @@ plugins:
     append: 
       headers:
       - access-control-allow-origin:*
-      - access-control-allow-methods:"POST, GET, OPTIONS"
+      - access-control-allow-methods:POST, GET, OPTIONS, DELETE, PATCH
 
 plugins:
 - name: response-transformer
@@ -32,4 +32,4 @@ plugins:
     append:
       headers:
       - access-control-allow-origin:*
-      - access-control-allow-methods:"POST, GET, OPTIONS"
+      - access-control-allow-methods:POST, GET, OPTIONS, DELETE, PATCH
