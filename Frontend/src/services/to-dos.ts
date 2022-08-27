@@ -15,21 +15,21 @@ axios.defaults.headers.common["authorization"] = `${localStorage.getItem(
 )}`;
 
 export const getAllTodos = async () => {
-  const { data } = await axios.get<ToDo[]>("http://localhost:8082/tasks");
+  const { data } = await axios.get<ToDo[]>("/tasks");
   return data;
 };
 
 export const getTodo = async (ID: number) => {
-  const { data } = await axios.get<ToDo>(`http://localhost:8082/tasks/${ID}`);
+  const { data } = await axios.get<ToDo>(`/${ID}`);
   return data;
 };
 
 export const createTodo = async (todo: {
   title: string;
   description: string;
-  Status: string;
+  status: string;
 }) => {
-  const { data } = await axios.post<ToDo>("http://localhost:8082/tasks", todo);
+  const { data } = await axios.post<ToDo>("/tasks", todo);
   return data;
 };
 
@@ -38,19 +38,13 @@ export const updateTodo = async (
   todo: {
     title?: string;
     description?: string;
-    Status?: string;
+    status?: string;
   }
 ) => {
-  const { data } = await axios.put<ToDo>(
-    `http://localhost:8082/tasks/${ID}`,
-    todo
-  );
+  const { data } = await axios.put<ToDo>(`/tasks/${ID}`, todo);
   return data;
 };
 
 export const deleteTodo = async (ID: number) => {
-  const { data } = await axios.delete<ToDo>(
-    `http://localhost:8082/tasks/${ID}`
-  );
-  return data;
+  const { data } = await axios.delete<ToDo>(`/tasks/${ID}`);
 };
